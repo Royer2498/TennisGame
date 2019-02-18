@@ -6,33 +6,15 @@ var TennisGame = function(player1Name, player2Name) {
 };
 
 TennisGame.prototype.getScore = function() {
-    let score = "";
-    if (this.isAllPoint()) {
-        score = this.getThePointInLetters(this.player1Point) + "-All";
-        return score;
-    }
-    if (this.isDeuce()){
-        score = "Deuce";
-        return score;
-    }
-    if( this.player1Point < 4 && this.player2Point<4){
-        score = this.getThePointInLetters(this.player1Point) + "-" + this.getThePointInLetters(this.player2Point);
-        return score;
-    }
-    if(this.isThereWinner()){
-        score = "Win for "+ this.getTheWinner();
-        return score;
-    }
-
-    if (this.player1Point > this.player2Point && this.player2Point >= 3) {
-        score = "Advantage player1";
-    }
-
-    if (this.player2Point > this.player1Point && this.player1Point >= 3) {
-        score = "Advantage player2";
-    }
-
-    return score;
+    if (this.isTheGameTied())
+        return this.getThePointInLetters(this.player1Point) + "-All";
+    if (this.isDeuce())
+        return "Deuce";
+    if(this.areTheScoresUnderForty())
+        return this.getThePointInLetters(this.player1Point) + "-" + this.getThePointInLetters(this.player2Point);
+    if(this.isThereWinner())
+        return "Win for "+ this.getTheWinner();
+    return "Advantage "+this.getTheWinner();
 };
 
 TennisGame.prototype.getThePointInLetters = function(point){
@@ -59,11 +41,16 @@ TennisGame.prototype.getTheWinner = function(){
         return "player2";
 };
 
+TennisGame.prototype.areTheScoresUnderForty = function(){
+    return this.player1Point < 4 && this.player2Point<4;
+};
+
+
 TennisGame.prototype.isDeuce = function() {
     return this.player1Point === this.player2Point && this.player1Point > 2;
 };
 
-TennisGame.prototype.isAllPoint = function () {
+TennisGame.prototype.isTheGameTied = function () {
     return this.player1Point === this.player2Point && this.player1Point < 3;
 };
 
@@ -83,19 +70,11 @@ TennisGame.prototype.isFortyPoint = function (point) {
     return point === 3;
 };
 
-TennisGame.prototype.P1Score = function() {
-    this.player1Point++;
-};
-
-TennisGame.prototype.P2Score = function() {
-    this.player2Point++;
-};
-
 TennisGame.prototype.wonPoint = function(player) {
     if (player === "player1")
-        this.P1Score();
+        this.player1Point++;
     else
-        this.P2Score();
+        this.player2Point++;
 };
 
 if (typeof window === "undefined") {
