@@ -2,9 +2,9 @@ var assert = require('assert');
 var expect = require('chai').expect;
 var should = require('chai').should();
 
-import TennisGame2 from '../tennisgame2.js';
+import TennisGame from '../TennisGame.js';
 
-describe('TennisGame2', function() {
+describe('TennisGame', function() {
    let game;
    let allScores = [
        [0, 0, "Love-All"],
@@ -55,7 +55,7 @@ describe('TennisGame2', function() {
 
 
    function checkScore(player1Score, player2Score, literalScore){
-       let thisGame = new TennisGame2("player1", "player2");
+       let thisGame = new TennisGame("player1", "player2");
        var highestScore = Math.max(player1Score, player2Score);
        for (let i = 0; i < highestScore; i++) {
            if (i < player1Score) {
