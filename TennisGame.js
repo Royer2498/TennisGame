@@ -12,62 +12,12 @@ var TennisGame = function(player1Name, player2Name) {
 TennisGame.prototype.getScore = function() {
     var score = "";
 
-    if (this.player1Point === this.player2Point && this.player1Point < 3) {
-        if (this.isLove(this.player1Point))
-            score = "Love";
-        if (this.isFifteen(this.player1Point))
-            score = "Fifteen";
-        if (this.isThirty(this.player1Point))
-            score = "Thirty";
-        score += "-All";
+    if (this.isAllPoint()) {
+        score = this.getThePointInLetters(this.player1Point) + "-All"
     }
-    if (this.player1Point === this.player2Point && this.player1Point > 2)
+    if (this.isDeuce()){
         score = "Deuce";
-
-    if (this.player1Point > 0 && this.player2Point === 0) {
-        if (this.isFifteen(this.player1Point))
-            this.P1res = "Fifteen";
-        if (this.isThirty(this.player1Point))
-            this.P1res = "Thirty";
-        if (this.isForty(this.player1Point))
-            this.P1res = "Forty";
-
-        this.P2res = "Love";
-        score = this.P1res + "-" + this.P2res;
-    }
-    if (this.player2Point > 0 && this.player1Point === 0) {
-        if (this.isFifteen(this.player2Point))
-            this.P2res = "Fifteen";
-        if (this.isThirty(this.player2Point))
-            this.P2res = "Thirty";
-        if (this.isForty(this.player2Point))
-            this.P2res = "Forty";
-
-        this.P1res = "Love";
-        score = this.P1res + "-" + this.P2res;
-    }
-
-    if (this.player1Point > this.player2Point && this.player1Point < 4) {
-        if (this.isThirty(this.player1Point))
-            this.P1res = "Thirty";
-        if (this.isForty(this.player1Point))
-            this.P1res = "Forty";
-        if (this.isFifteen(this.player2Point))
-            this.P2res = "Fifteen";
-        if (this.isThirty(this.player2Point))
-            this.P2res = "Thirty";
-        score = this.P1res + "-" + this.P2res;
-    }
-    if (this.player2Point > this.player1Point && this.player2Point < 4) {
-        if (this.isThirty(this.player2Point))
-            this.P2res = "Thirty";
-        if (this.isForty(this.player2Point))
-            this.P2res = "Forty";
-        if (this.isFifteen(this.player1Point))
-            this.P1res = "Fifteen";
-        if (this.isThirty(this.player1Point))
-            this.P1res = "Thirty";
-        score = this.P1res + "-" + this.P2res;
+        return score;
     }
 
     if (this.player1Point > this.player2Point && this.player2Point >= 3) {
@@ -84,22 +34,47 @@ TennisGame.prototype.getScore = function() {
     if (this.player2Point >= 4 && this.player1Point >= 0 && (this.player2Point - this.player1Point) >= 2) {
         score = "Win for player2";
     }
+
+    if(!this.isAllPoint() && (this.player1Point < 4 && this.player2Point<4)){
+        score = this.getThePointInLetters(this.player1Point) + "-" + this.getThePointInLetters(this.player2Point);
+    }
     return score;
 };
 
-TennisGame.prototype.isLove = function (point) {
+TennisGame.prototype.getThePointInLetters = function(point){
+    let pointInLetters = "";
+    if(this.isLovePoint(point))
+        pointInLetters = "Love";
+    if(this.isFifteenPoint(point))
+        pointInLetters = "Fifteen";
+    if(this.isThirtyPoint(point))
+        pointInLetters = "Thirty";
+    if(this.isFortyPoint(point))
+        pointInLetters = "Forty";
+    return pointInLetters;
+};
+
+TennisGame.prototype.isDeuce = function() {
+    return this.player1Point === this.player2Point && this.player1Point > 2;
+};
+
+TennisGame.prototype.isAllPoint = function () {
+    return this.player1Point === this.player2Point && this.player1Point < 3;
+};
+
+TennisGame.prototype.isLovePoint = function (point) {
     return point === 0;
 };
 
-TennisGame.prototype.isFifteen = function (point) {
+TennisGame.prototype.isFifteenPoint = function (point) {
     return point === 1;
 };
 
-TennisGame.prototype.isThirty = function (point) {
+TennisGame.prototype.isThirtyPoint = function (point) {
     return point === 2;
 };
 
-TennisGame.prototype.isForty = function (point) {
+TennisGame.prototype.isFortyPoint = function (point) {
     return point === 3;
 };
 
