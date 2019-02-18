@@ -1,22 +1,26 @@
 var TennisGame = function(player1Name, player2Name) {
     this.player1Point = 0;
     this.player2Point = 0;
-
-    this.P1res = "";
-    this.P2res = "";
-
     this.player1Name = player1Name;
     this.player2Name = player2Name;
 };
 
 TennisGame.prototype.getScore = function() {
-    var score = "";
-
+    let score = "";
     if (this.isAllPoint()) {
-        score = this.getThePointInLetters(this.player1Point) + "-All"
+        score = this.getThePointInLetters(this.player1Point) + "-All";
+        return score;
     }
     if (this.isDeuce()){
         score = "Deuce";
+        return score;
+    }
+    if( this.player1Point < 4 && this.player2Point<4){
+        score = this.getThePointInLetters(this.player1Point) + "-" + this.getThePointInLetters(this.player2Point);
+        return score;
+    }
+    if(this.isThereWinner()){
+        score = "Win for "+ this.getTheWinner();
         return score;
     }
 
@@ -28,16 +32,6 @@ TennisGame.prototype.getScore = function() {
         score = "Advantage player2";
     }
 
-    if (this.player1Point >= 4 && this.player2Point >= 0 && (this.player1Point - this.player2Point) >= 2) {
-        score = "Win for player1";
-    }
-    if (this.player2Point >= 4 && this.player1Point >= 0 && (this.player2Point - this.player1Point) >= 2) {
-        score = "Win for player2";
-    }
-
-    if(!this.isAllPoint() && (this.player1Point < 4 && this.player2Point<4)){
-        score = this.getThePointInLetters(this.player1Point) + "-" + this.getThePointInLetters(this.player2Point);
-    }
     return score;
 };
 
@@ -52,6 +46,17 @@ TennisGame.prototype.getThePointInLetters = function(point){
     if(this.isFortyPoint(point))
         pointInLetters = "Forty";
     return pointInLetters;
+};
+
+TennisGame.prototype.isThereWinner = function(){
+    return ((this.player1Point - this.player2Point) >= 2) || ((this.player2Point - this.player1Point) >= 2);
+};
+
+TennisGame.prototype.getTheWinner = function(){
+    if(this.player1Point > this.player2Point)
+        return "player1";
+    else
+        return "player2";
 };
 
 TennisGame.prototype.isDeuce = function() {
